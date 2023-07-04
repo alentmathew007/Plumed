@@ -12,24 +12,34 @@ CVs are the variables that you want to bias during the metadynamics simulation. 
 
 ```
 UNITS NATURAL
-DISTANCE LABEL=distances ATOMS=<atom-selection>
+MOLINFO STRUCTURE=reference.pdb
+WHOLEMOLECULES
+g1: GROUP ATOMS=<atom-selection> (protein)
+g2: GROUP ATOMS=<atom-selection>  (ligand)
+c1: CENTER ATOMS=g1
+c2: CENTER ATOMS=g2
+cv1: DISTANCE ATOMS=c1,c2
 ```
 
-Replace `<atom-selection>` with the appropriate atom selection for the protein-ligand distance.
+Replace `<atom-selection>` with the appropriate atom selection for the protein-ligand distance. Usually the collective variable is the distance between the center of mass of the binding cavity of 
+the protein and the center of mass of the ligand molecules. Here in this example , c1 and c2 are the center of mass atoms of protein and ligand respectively. cv1 is the collective varibale , which
+is the distance between the c1 and c2.
 
 ## Step 4: Set up the metadynamics simulation
 In the same `plumed.dat` file, define the metadynamics settings. We will use adaptive Gaussian kernels to bias the CVs. Here's an example:
 
 ```
-METAD ...
-ARG=distances
-SIGMA=0.1   # Initial Gaussian width
-PACE=500    # Frequency of Gaussian deposition
-HEIGHT=0.5  # Gaussian height
+restraint: METAD 
+ARG=cv1 
+SIGMA=500 # Initial Gaussian width ( based on adaptive gaussian kerenals using diffusion scheme with gaussian that should cover the space of 500 time steps in collective variables)
+HEIGHT=0.30 # Gaussian height
+PACE=500 # Frequency of Gaussian deposition
+ADAPTIVE=DIFF # adaptive gaussian kernal with diffusion scheme (more about adpative gaussain kernals can be found in https://pubs.acs.org/doi/full/10.1021/ct3002464) 
 GRID_MIN=0.0
 GRID_MAX=1.5
 GRID_BIN=1500
-...
+PRINT ARG=cv1  STRIDE=100 FILE=COLVAR 
+
 ```
 
 Adjust the parameters according to your system. `SIGMA` controls the initial Gaussian width, `PACE` determines the frequency of Gaussian deposition, `HEIGHT` sets the Gaussian height, and `GRID_MIN`, `GRID_MAX`, and `GRID_BIN` define the grid for the free energy calculation.
