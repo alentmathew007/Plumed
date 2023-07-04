@@ -1,4 +1,3 @@
-```markdown
 # Tutorial: Using PLUMED Software for Protein-Ligand Unbinding Free Energy Calculation with Adaptive Gaussian Kernels
 
 ## Step 1: Set up the system
