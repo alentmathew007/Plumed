@@ -25,7 +25,7 @@ the protein and the center of mass of the ligand molecules. Here in this example
 is the distance between the c1 and c2.
 
 ## Step 4: Set up the metadynamics simulation
-In the same `plumed.dat` file, define the metadynamics settings. We will use adaptive Gaussian kernels to bias the CVs. Here's an example:
+In the same `plumed.dat` file, define the metadynamics settings. We will use adaptive Gaussian kernels to bias the CVs.More about adpative gaussain kernals can be found in https://pubs.acs.org/doi/full/10.1021/ct3002464. Here's an example:
 
 ```
 restraint: METAD 
@@ -33,7 +33,7 @@ ARG=cv1
 SIGMA=500 # Initial Gaussian width ( based on adaptive gaussian kerenals using diffusion scheme with gaussian that should cover the space of 500 time steps in collective variables)
 HEIGHT=0.30 # Gaussian height
 PACE=500 # Frequency of Gaussian deposition
-ADAPTIVE=DIFF # adaptive gaussian kernal with diffusion scheme (more about adpative gaussain kernals can be found in https://pubs.acs.org/doi/full/10.1021/ct3002464) 
+ADAPTIVE=DIFF # adaptive gaussian kernal with diffusion scheme  
 GRID_MIN=0.0
 GRID_MAX=1.5
 GRID_BIN=1500
